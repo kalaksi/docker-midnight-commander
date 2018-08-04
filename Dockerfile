@@ -24,7 +24,7 @@ RUN groupadd -g "$MC_GID" mc && \
     # Make sure we don't have any host keys generated at this point
     rm -f /etc/ssh-default/*_key /etc/ssh-default/*.pub && \
     echo 'ForceCommand /usr/bin/mc /data /data' >> /etc/ssh-default/sshd_config && \
-    # Seriously, Alpine has the root account unlocked (and with empty password)! :(
+    # Lock root account. Seriously, Alpine has the root account unlocked by default (and with empty password)! :(
     # Noticed that in some containers it's not SUID but maybe shadow-package makes it SUID?
     passwd -l root
 
