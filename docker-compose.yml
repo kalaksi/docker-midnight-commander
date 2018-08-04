@@ -1,0 +1,28 @@
+version: 2
+services:
+  midnight-commander:
+    image: kalaksi/midnight-commander
+    container_name: midnight-commander
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+      - SYS_CHROOT
+    volumes:
+      - midnight-commander:/etc/ssh
+      - /mnt/my-arbitrary-data-dir:/data
+    ports:
+      - 2222:2222/tcp
+    # Some examples of environment variables
+    # environment:
+    #   MC_SUPPLEMENTARY_GIDS: "12345 12346"
+    #   MC_PASSWORD: idontusepasswords
+    #   MC_AUTHORIZED_KEYS: | 
+    #     ssh-rsa AAAA... me@machine
+    #     ssh-rsa AAAA... you@machine
+
+volumes:
+  midnight-commander: {}
+
