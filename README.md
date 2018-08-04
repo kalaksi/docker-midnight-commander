@@ -4,7 +4,7 @@
 - [GitHub repository](https://github.com/kalaksi/docker-midnight-commander)
 
 ### What is this container for?
-This container runs SSH server and configured Midnight Commander to run directly after login.  
+This container runs SSH server and is configured to run Midnight Commander directly after login.  
 So essentially this container is a remote accessible file manager.  
 
 ### Why use this container?
