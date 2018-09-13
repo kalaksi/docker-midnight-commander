@@ -26,6 +26,7 @@ RUN groupadd -g "$MC_GID" mc && \
     echo 'ForceCommand /usr/bin/mc /data /data' >> /etc/ssh-default/sshd_config && \
     # Lock root account. Seriously, Alpine has the root account unlocked by default (and with empty password)! :(
     # Noticed that in some containers it's not SUID but maybe shadow-package makes it SUID?
+    # Opened an issue: https://github.com/gliderlabs/docker-alpine/issues/430
     passwd -l root
 
 # Volume for storing sshd_config and host keys so they don't change on every restart
