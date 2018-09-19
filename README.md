@@ -16,8 +16,7 @@ Additionally, overly complex shell scripts and unofficial base images make it ha
 To remedy the situation, these images have been written with security and simplicity in mind. See [Design Goals](#design-goals) further down.
 
 ### Running this container
-At the moment, I'm not providing full commands here.  
-I assume you're experienced enough to know how to run containers.  
+See the example ```docker-compose.yml``` in the source repository.
 
 #### Supported tags
 See the ```Tags``` tab on Docker Hub for specifics. Basically you have:
