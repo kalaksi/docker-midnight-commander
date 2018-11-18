@@ -11,12 +11,13 @@ So essentially this container is a remote accessible file manager.
 **Simply put, this container has been written with simplicity and security in mind.**
 
 Surprisingly, _many_ community containers run unnecessarily with root privileges by default and don't provide help for dropping unneeded CAPabilities either.
-Additionally, overly complex shell scripts and unofficial base images make it harder to verify the source and keep images up-to-date.  
+On top of that, overly complex shell scripts, monolithic designs and unofficial base images make it harder to verify the source among other issues.
 
 To remedy the situation, these images have been written with security and simplicity in mind. See [Design Goals](#design-goals) further down.
 
 ### Running this container
-See the example ```docker-compose.yml``` in the source repository.
+See the example ```docker-compose.yml``` in the source repository.  
+The username for connecting the container is ```mc```.
 
 #### Supported tags
 See the ```Tags``` tab on Docker Hub for specifics. Basically you have:
