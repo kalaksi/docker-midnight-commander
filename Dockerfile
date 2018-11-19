@@ -1,4 +1,5 @@
 FROM alpine:3.8
+LABEL maintainer="kalaksi@users.noreply.github.com"
 
 # Since by default the first user has UID 1000, it's probably what most people want.
 # You're free to change it though, no need to rebuild the container either.
