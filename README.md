@@ -20,10 +20,10 @@ To remedy the situation, these images have been written with security and simpli
 |Don't run as root        |❌    | TODO: OpenSSH 7.5 makes privilege separation mandatory which requires root. Maybe change to some other SSH-server? |
 |Official base image      |✅    | |
 |Drop extra CAPabilities  |✅    | See ```docker-compose.yml``` |
-|No default passwords     |✅    | |
+|No default passwords     |✅    | No static default passwords. That would make the container insecure by default.|
 |Handle signals properly  |✅    | |
-|Simple Dockerfile        |✅    | |
-|Versioned tags           |✅    | |
+|Simple Dockerfile        |✅    | Keep everything in the Dockerfile if reasonable.|
+|Versioned tags           |✅    | Offer versioned tags for stability.|
 
 ## Running this container
 See the example ```docker-compose.yml``` in the source repository.  
@@ -40,16 +40,6 @@ If you need even more customization, modify the created ```sshd_config```-file l
 You can also bind-mount configuration files for Midnight Commander under ```/home/mc/.config/mc```.  
 
 ## Development
-### Design Goals
-## Design Goals
-- Never run as root unless necessary.
-- Use only official base images.
-- Provide an example ```docker-compose.yml``` that also shows what CAPabilities can be dropped.
-- No static default passwords. That would make the container insecure by default.
-- Handle signals properly.
-- Simple and minimal: try to keep everything in the Dockerfile if reasonable.
-- Offer versioned tags for stability.
-- Don't restrict configuration possibilities: provide a way to use native config files for the containerized application.
 
 ### Contributing
 See the repository on <https://github.com/kalaksi/docker-midnight-commander>.
