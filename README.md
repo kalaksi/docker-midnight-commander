@@ -22,7 +22,7 @@ To remedy the situation, these images have been written with security and simpli
 |Drop extra CAPabilities  |✅    | |
 |No default passwords     |✅    | |
 |Handle signals properly  |✅    | |
-|Minimal                  |✅    | |
+|Simple Dockerfile        |✅    | |
 |Versioned tags           |✅    | |
 
 ## Running this container
