@@ -13,7 +13,7 @@ So essentially this container is a remote accessible file manager.
 Surprisingly, _many_ community containers run unnecessarily with root privileges by default and don't provide help for dropping unneeded CAPabilities either.
 On top of that, overly complex shell scripts, monolithic designs and unofficial base images make it harder to verify the source among other issues.
 
-To remedy the situation, these images have been written with security and simplicity in mind. See [Design Goals](#design-goals) further down.
+To remedy the situation, these images have been written with security and simplicity in mind.
 
 |Requirement              |Status|Details|
 |-------------------------|:----:|-------|
