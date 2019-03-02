@@ -19,7 +19,7 @@ To remedy the situation, these images have been written with security and simpli
 |-------------------------|:----:|-------|
 |Don't run as root        |❌    | TODO: OpenSSH 7.5 makes privilege separation mandatory which requires root. Maybe change to some other SSH-server? |
 |Official base image      |✅    | |
-|Drop extra CAPabilities  |✅    | |
+|Drop extra CAPabilities  |✅    | See ```docker-compose.yml``` |
 |No default passwords     |✅    | |
 |Handle signals properly  |✅    | |
 |Simple Dockerfile        |✅    | |
