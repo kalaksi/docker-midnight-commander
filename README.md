@@ -15,6 +15,16 @@ On top of that, overly complex shell scripts, monolithic designs and unofficial 
 
 To remedy the situation, these images have been written with security and simplicity in mind. See [Design Goals](#design-goals) further down.
 
+|Requirement              |Status|Details|
+|-------------------------|:----:|-------|
+|Don't run as root        |❌    | TODO: OpenSSH 7.5 makes privilege separation mandatory which requires root. Maybe change to some other SSH-server? |
+|Official base image      |✅    | |
+|Drop extra CAPabilities  |✅    | |
+|No default passwords     |✅    | |
+|Handle signals properly  |✅    | |
+|Minimal                  |✅    | |
+|Versioned tags           |✅    | |
+
 ### Running this container
 See the example ```docker-compose.yml``` in the source repository.  
 The username for connecting the container is ```mc```.
@@ -31,14 +41,15 @@ You can also bind-mount configuration files for Midnight Commander under ```/hom
 
 ### Development
 #### Design Goals
+### Design Goals
 - Never run as root unless necessary.
-- No static default passwords. That would make the container insecure by default.
 - Use only official base images.
 - Provide an example ```docker-compose.yml``` that also shows what CAPabilities can be dropped.
-- Offer versioned tags for stability.
-- Try to keep everything in the Dockerfile (if reasonable, considering line count and readability).
-- Don't restrict configuration possibilities: provide a way to use native config files for the containerized application.
+- No static default passwords. That would make the container insecure by default.
 - Handle signals properly.
+- Simple and minimal: try to keep everything in the Dockerfile if reasonable.
+- Offer versioned tags for stability.
+- Don't restrict configuration possibilities: provide a way to use native config files for the containerized application.
 
 #### Contributing
 See the repository on <https://github.com/kalaksi/docker-midnight-commander>.
