@@ -15,15 +15,15 @@ On top of that, overly complex shell scripts, monolithic designs and unofficial 
 
 To remedy the situation, these images have been written with security and simplicity in mind.
 
-|Requirement              |Status|Details|
-|-------------------------|:----:|-------|
-|Don't run as root        |❌    | TODO: OpenSSH 7.5 makes privilege separation mandatory which requires root. Maybe change to some other SSH-server? |
-|Official base image      |✅    | |
-|Drop extra CAPabilities  |✅    | See ```docker-compose.yml``` |
-|No default passwords     |✅    | No static default passwords. That would make the container insecure by default.|
-|Handle signals properly  |✅    | |
-|Simple Dockerfile        |✅    | Keep everything in the Dockerfile if reasonable.|
-|Versioned tags           |✅    | Offer versioned tags for stability.|
+|Requirement                   |Status|Details|
+|------------------------------|:----:|-------|
+|Don't run container as root   |❌    | OpenSSH 7.5 makes privilege separation mandatory which requires root, but those privileges are dropped. TODO: Maybe change to some other SSH-server? |
+|Official base image           |✅    | |
+|Drop extra CAPabilities       |✅    | See ```docker-compose.yml``` |
+|No default passwords          |✅    | No static default passwords. That would make the container insecure by default.|
+|Handle signals properly       |✅    | |
+|Simple Dockerfile             |✅    | Keep everything in the Dockerfile if reasonable.|
+|Versioned tags                |✅    | Offer versioned tags for stability.|
 
 ## Running this container
 See the example ```docker-compose.yml``` in the source repository.  
