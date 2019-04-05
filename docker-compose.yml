@@ -1,8 +1,8 @@
-version: 2
+version: '2'
 services:
   midnight-commander:
     image: kalaksi/midnight-commander
-    container_name: midnight-commander
+    restart: unless-stopped
     cap_drop:
       - ALL
     cap_add:
