@@ -7,7 +7,17 @@ ENV MC_UID 1000
 ENV MC_GID 1000
 # Space-separated list. Supplementary groups to add the user to.
 ENV MC_SUPPLEMENTARY_GIDS ""
+# Change to 'yes' if the given password is already hashed and not a plain password.
+# XXX: disabled until chpasswd bug has been fixed! https://github.com/alpinelinux/aports/pull/7239
+#ENV MC_PASSWORD_HASHED "no"
+# Provide the login password. This is not the preferred method especially for plain passwords
+# and will be overridden by secrets-file if that is provided.
 ENV MC_PASSWORD ""
+# The preferred way for providing passwords. Use e.g. docker-compose secrets for which this
+# variable has been configured for by default. Alternatively, you could bind-mount the
+# password-file manually and change this if necessary:
+ENV MC_PASSWORD_FILE "/run/secrets/mc_password"
+# SSH pubkeys for login.
 ENV MC_AUTHORIZED_KEYS ""
 
 RUN apk --no-cache upgrade && \
@@ -17,7 +27,8 @@ RUN apk --no-cache upgrade && \
       openssh
 
 RUN groupadd -g "$MC_GID" mc && \
-    # '*' is the same as --disabled-password on non-busybox useradd-command, so pubkey authentication will still work.
+    # '*' is the same as --disabled-password on non-busybox useradd-command,
+    # so pubkey authentication will still work.
     useradd --password '*' -u "$MC_UID" -g "$MC_GID" -d /home/mc -s /bin/sh mc && \
     mkdir -p /home/mc/.ssh && \
     chmod 700 /home/mc/.ssh && \
@@ -37,10 +48,18 @@ EXPOSE 2222
 
 # XXX: Currently, it's impossible to run newer (7.5) openssh without root :(
 ENTRYPOINT set -eu; \
+           export chpasswd_opts=""; \
            [ -f "/etc/ssh/sshd_config" ]      || cp /etc/ssh-default/sshd_config /etc/ssh; \
            [ -f "/etc/ssh/moduli" ]           || cp /etc/ssh-default/moduli /etc/ssh; \
            [ -f "/etc/ssh/ssh_host_rsa_key" ] || ssh-keygen -A; \
-           [ -z "$MC_PASSWORD" ]              || echo "mc:$MC_PASSWORD" | chpasswd; \
+           # XXX: chpasswd too seems to currently have a bug so chpasswd is not currently working!
+           # https://github.com/alpinelinux/aports/pull/7239
+           # [ "$MC_PASSWORD_HASHED" == "no" ]  || chpasswd_opts="--encrypted"; \
+           # [ -z "$MC_PASSWORD" ]              || echo -n "mc:$MC_PASSWORD" | chpasswd $chpasswd_opts; \
+           # [ -f "$MC_PASSWORD_FILE" ]         && echo -n "mc:" | cat - "$MC_PASSWORD_FILE" | chpasswd $chpasswd_opts; \
+           # Using passwd as a workaround:
+           [ -z "$MC_PASSWORD" ]              || echo -en "${MC_PASSWORD}\n${MC_PASSWORD}" | passwd mc; \
+           [ -f "$MC_PASSWORD_FILE" ]         && cat "$MC_PASSWORD_FILE" | cat - "$MC_PASSWORD_FILE" | passwd mc; \
            echo "$MC_AUTHORIZED_KEYS" > "/home/mc/.ssh/authorized_keys"; \
            # Modify the UID/GID if user has changed them from defaults
            [ $MC_UID -eq 1000 ] || usermod -u "$MC_UID" mc; \

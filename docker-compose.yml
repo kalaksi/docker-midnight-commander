@@ -10,18 +10,28 @@ services:
       - SETGID
       - SETUID
       - SYS_CHROOT
+    ports:
+      - 2222:2222/tcp
+    # Some examples of environment variables. See Dockerfile for more information.
+    environment:
+      MC_SUPPLEMENTARY_GIDS: "12345 12346"
+      MC_AUTHORIZED_KEYS: | 
+        ssh-rsa AAAA... me@machine
+        ssh-rsa AAAA... you@machine
+    # Docker-compose offers a better mechanism for passwords called "secrets", but it requires
+    # compose file version 3.1. Alternatively, mount the secrets file manually.
+    # secrets:
+    #   - mc_password
     volumes:
       - midnight-commander:/etc/ssh
       - /mnt/my-arbitrary-data-dir:/data
-    ports:
-      - 2222:2222/tcp
-    # Some examples of environment variables
-    # environment:
-    #   MC_SUPPLEMENTARY_GIDS: "12345 12346"
-    #   MC_PASSWORD: idontusepasswords
-    #   MC_AUTHORIZED_KEYS: | 
-    #     ssh-rsa AAAA... me@machine
-    #     ssh-rsa AAAA... you@machine
+      # Mount the secrets file manually if not using docker-compose for secrets:
+      # - ./secrets/mc_password:/run/secrets/mc_password:ro
+
+# secrets:
+#   mc_password:
+#     # Put the password in this file without anything else.
+#     file: ./secrets/mc_password
 
 volumes:
   midnight-commander: {}
