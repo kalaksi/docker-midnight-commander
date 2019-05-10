@@ -43,7 +43,6 @@ RUN groupadd -g "$MC_GID" mc && \
 
 # Volume for storing sshd_config and host keys so they don't change on every restart
 VOLUME /etc/ssh
-VOLUME /data
 EXPOSE 2222
 
 # XXX: Currently, it's impossible to run newer (7.5) openssh without root :(
