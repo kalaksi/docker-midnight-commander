@@ -30,8 +30,6 @@ RUN groupadd -g "$MC_GID" mc && \
     # '*' is the same as --disabled-password on non-busybox useradd-command,
     # so pubkey authentication will still work.
     useradd --password '*' -u "$MC_UID" -g "$MC_GID" -d /home/mc -s /bin/sh mc && \
-    mkdir -p /home/mc/.ssh && \
-    chmod 700 /home/mc/.ssh && \
     mv /etc/ssh /etc/ssh-default && \
     # Make sure we don't have any host keys generated at this point
     rm -f /etc/ssh-default/*_key /etc/ssh-default/*.pub && \
@@ -51,7 +49,7 @@ ENTRYPOINT set -eu; \
            [ -f "/etc/ssh/sshd_config" ]      || cp /etc/ssh-default/sshd_config /etc/ssh; \
            [ -f "/etc/ssh/moduli" ]           || cp /etc/ssh-default/moduli /etc/ssh; \
            [ -f "/etc/ssh/ssh_host_rsa_key" ] || ssh-keygen -A; \
-           # XXX: chpasswd too seems to currently have a bug so chpasswd is not currently working!
+           # XXX: chpasswd too seems to currently have an issue so chpasswd is not currently working!
            # https://github.com/alpinelinux/aports/pull/7239
            # [ "$MC_PASSWORD_HASHED" == "no" ]  || chpasswd_opts="--encrypted"; \
            # [ -z "$MC_PASSWORD" ]              || echo -n "mc:$MC_PASSWORD" | chpasswd $chpasswd_opts; \
@@ -59,10 +57,15 @@ ENTRYPOINT set -eu; \
            # Using passwd as a workaround:
            [ -z "$MC_PASSWORD" ]              || echo -en "${MC_PASSWORD}\n${MC_PASSWORD}" | passwd mc; \
            [ -f "$MC_PASSWORD_FILE" ]         && cat "$MC_PASSWORD_FILE" | cat - "$MC_PASSWORD_FILE" | passwd mc; \
-           echo "$MC_AUTHORIZED_KEYS" > "/home/mc/.ssh/authorized_keys"; \
            # Modify the UID/GID if user has changed them from defaults
-           [ $MC_UID -eq 1000 ] || usermod -u "$MC_UID" mc; \
-           [ $MC_GID -eq 1000 ] || groupmod -g "$MC_GID" mc; \
+           [ $MC_UID -eq 1000 ]               || usermod -u "$MC_UID" mc; \
+           [ $MC_GID -eq 1000 ]               || groupmod -g "$MC_GID" mc; \
+           # XXX: *sigh* there's a weird permission issue if the home directory and usermodes are done in base image
+           #      but ownership changed in entrypoint: even root can't modify authorized_keys on second start then.
+           #      Creating those here then...
+           mkdir -p /home/mc/.ssh && \
+           echo "$MC_AUTHORIZED_KEYS" > "/home/mc/.ssh/authorized_keys"; \
+           chmod 700 -R /home/mc && \
            chown -R "$MC_UID:$MC_GID" /home/mc; \
            for ngid in $MC_SUPPLEMENTARY_GIDS; do \
                # Don't create if already exists
