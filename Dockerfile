@@ -1,4 +1,4 @@
-FROM alpine:3.10.1
+FROM alpine:3.10.2
 LABEL maintainer="kalaksi@users.noreply.github.com"
 
 # Since by default the first user has UID 1000, it's probably what most people want.
