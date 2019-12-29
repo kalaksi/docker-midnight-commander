@@ -1,6 +1,6 @@
 
 ## Repositories
-- [Docker Hub repository](https://registry.hub.docker.com/u/kalaksi/midnight-commander/)
+- [Docker Hub repository](https://hub.docker.com/r/kalaksi/midnight-commander/)
 - [GitHub repository](https://github.com/kalaksi/docker-midnight-commander)
 
 ## What is this container for?
