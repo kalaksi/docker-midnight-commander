@@ -37,8 +37,9 @@ See the ```Tags``` tab on Docker Hub for specifics. Basically you have:
 
 ### Configuration
 See ```Dockerfile``` and ```docker-compose.yml``` (<https://github.com/kalaksi/docker-midnight-commander>) for usable environment variables. Variables that are left empty will use default values.  
-If you need even more customization, modify the created ```sshd_config```-file located in the ```midnight-commander```-volume. It's possible to use the configuration file to pass arguments to Midnight Commander.  
-You can also bind-mount configuration files for Midnight Commander under ```/home/mc/.config/mc```.  
+  
+To modify sshd configuration, modify the ```sshd_config``` file located in the ```midnight-commander```-volume.  
+To modify Midnight Commander configuration, you can bind-mount over the configuration files under ```/home/mc/.config/mc```.  
 
 ## Development
 

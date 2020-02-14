@@ -18,14 +18,15 @@ services:
       MC_AUTHORIZED_KEYS: | 
         ssh-rsa AAAA... me@machine
         ssh-rsa AAAA... you@machine
-    # Docker-compose offers a better mechanism for passwords called "secrets", but it requires
+    # Docker-compose offers a mechanism for passwords called "secrets", but it requires
     # compose file version 3.1. Alternatively, mount the secrets file manually.
     # secrets:
     #   - mc_password
     volumes:
       - midnight-commander:/etc/ssh
-      - /mnt/my-arbitrary-data-dir:/data
-      # Mount the secrets file manually if not using docker-compose for secrets:
+      # You can mount multiple sources by using e.g. /data/data1, /data/data2 as mountpoints.
+      - /mnt/my-arbitrary-data-dir:/data 
+      # If not using docker-compose for secrets, mount a file containing the password manually.
       # - ./secrets/mc_password:/run/secrets/mc_password:ro
 
 # secrets:
@@ -34,5 +35,6 @@ services:
 #     file: ./secrets/mc_password
 
 volumes:
+  # This volume will contain server keys and configuration
   midnight-commander: {}
 
