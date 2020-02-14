@@ -11,8 +11,7 @@ ENV MC_GID 1000
 # Space-separated list. Supplementary groups to add the user to.
 ENV MC_SUPPLEMENTARY_GIDS ""
 # Change to 'yes' if the given password is already hashed and not a plain password.
-# XXX: disabled until chpasswd bug has been fixed! https://github.com/alpinelinux/aports/pull/7239
-#ENV MC_PASSWORD_HASHED "no"
+ENV MC_PASSWORD_HASHED "no"
 # Provide the login password. This is not the preferred method especially for plain passwords
 # and will be overridden by secrets-file if that is provided.
 ENV MC_PASSWORD ""
@@ -52,20 +51,15 @@ ENTRYPOINT set -eu; \
            [ -f "/etc/ssh/sshd_config" ]      || cp /etc/ssh-default/sshd_config /etc/ssh; \
            [ -f "/etc/ssh/moduli" ]           || cp /etc/ssh-default/moduli /etc/ssh; \
            [ -f "/etc/ssh/ssh_host_rsa_key" ] || ssh-keygen -A; \
-           # XXX: chpasswd too seems to currently have an issue so chpasswd is not currently working!
-           # https://github.com/alpinelinux/aports/pull/7239
-           # [ "$MC_PASSWORD_HASHED" == "no" ]  || chpasswd_opts="--encrypted"; \
-           # [ -z "$MC_PASSWORD" ]              || echo -n "mc:$MC_PASSWORD" | chpasswd $chpasswd_opts; \
-           # [ -f "$MC_PASSWORD_FILE" ]         && echo -n "mc:" | cat - "$MC_PASSWORD_FILE" | chpasswd $chpasswd_opts; \
-           # Using passwd as a workaround:
-           [ -z "$MC_PASSWORD" ]              || echo -en "${MC_PASSWORD}\n${MC_PASSWORD}" | passwd mc; \
-           [ -f "$MC_PASSWORD_FILE" ]         && cat "$MC_PASSWORD_FILE" | cat - "$MC_PASSWORD_FILE" | passwd mc; \
+           [ "$MC_PASSWORD_HASHED" == "no" ]  || chpasswd_opts="--encrypted"; \
+           [ -z "$MC_PASSWORD" ]              || echo -n "mc:$MC_PASSWORD" | chpasswd $chpasswd_opts; \
+           [ -f "$MC_PASSWORD_FILE" ]         && echo -n "mc:" | cat - "$MC_PASSWORD_FILE" | chpasswd $chpasswd_opts; \
            # Modify the UID/GID if user has changed them from defaults
            [ $MC_UID -eq 1000 ]               || usermod -u "$MC_UID" mc; \
            [ $MC_GID -eq 1000 ]               || groupmod -g "$MC_GID" mc; \
-           # XXX: *sigh* there's a weird permission issue if the home directory and usermodes are done in base image
-           #      but ownership changed in entrypoint: even root can't modify authorized_keys on second start then.
-           #      Creating those here then...
+           # XXX: There's a weird permission issue if the home directory and permissions are set in base image
+           #      but ownership changed in entrypoint: even root can't modify authorized_keys on a second container start then.
+           #      Creating the directories here then...
            mkdir -p /home/mc/.ssh && \
            echo "$MC_AUTHORIZED_KEYS" > "/home/mc/.ssh/authorized_keys"; \
            chmod 700 -R /home/mc && \
