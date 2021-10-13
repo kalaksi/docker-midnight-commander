@@ -1,7 +1,9 @@
 version: '2'
 services:
   midnight-commander:
-    image: kalaksi/midnight-commander
+    image: docker.io/kalaksi/midnight-commander
+    # You can also use GitLab as an alternative to Docker Hub:
+    # image: registry.gitlab.com/kalaksi-containers/midnight-commander
     restart: unless-stopped
     cap_drop:
       - ALL
