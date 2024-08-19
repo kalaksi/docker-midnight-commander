@@ -18,7 +18,7 @@ build:
     - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
     - docker buildx create --use
   script:
-    # If not in master, use branch name with any ".x" suffixes removed.
+    # If not in master, use branch name with ".x" suffix removed.
     - |
       if [ "$CI_COMMIT_BRANCH" != "$CI_DEFAULT_BRANCH" ]; then
         IMAGE_TAG=":$(echo "$CI_COMMIT_REF_NAME" | sed 's/\.x$//')"
