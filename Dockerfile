@@ -1,7 +1,7 @@
 # Copyright (c) 2018 kalaksi@users.noreply.github.com.
 # This work is licensed under the terms of the MIT license. For a copy, see <https://opensource.org/licenses/MIT>.
 
-FROM alpine:3.20.2
+FROM alpine:3.21.2
 LABEL maintainer="kalaksi@users.noreply.github.com"
 
 # Since by default the first user has UID 1000, it's probably what most people want.
