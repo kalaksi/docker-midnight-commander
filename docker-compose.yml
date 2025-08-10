@@ -1,4 +1,3 @@
-version: '2'
 services:
   midnight-commander:
     image: docker.io/kalaksi/midnight-commander
